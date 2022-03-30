@@ -43,6 +43,13 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/user-signup").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/adm-signup").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/api/delete-scheduling").hasRole("ADMIN")
+                .antMatchers(
+                        "/v2/api-docs",
+                        "/swagger-resources/**",
+                        "/swagger-ui.html",
+                        "/webjars/**" ,
+                        /*Probably not needed*/ "/swagger.json")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAutenticationFilter(authenticationManager(), userDetailsService, userService))
@@ -55,7 +62,7 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
         CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        corsConfiguration.setAllowedOrigins(Arrays.asList("*"));
         corsConfiguration.setAllowedMethods(Arrays.asList("DELETE", "POST", "GET"));
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;

@@ -7,6 +7,8 @@ import com.comeia.backend.model.User;
 import com.comeia.backend.security.JWTAutenticationFilter;
 import com.comeia.backend.services.UserService;
 import com.google.gson.Gson;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//http://localhost:8080/swagger-ui.html#/
+
 @org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api")
-public class RestController {
+@Api(value = "Api dos usuários")
+@CrossOrigin("*")
+public class UserController {
 
     @Autowired
     UserDetailsService userDetailsService;
@@ -29,6 +35,7 @@ public class RestController {
     PasswordEncoder encoder;
 
     @PostMapping("/user-signup")
+    @ApiOperation(value = "Salva/ Cadastra um novo usuário normal")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
 
         user.setAdmin(false);
@@ -38,6 +45,7 @@ public class RestController {
     }
 
     @PostMapping("/admin-signup")
+    @ApiOperation(value = "Salva/cadastra um novo administrador de sistema")
     public ResponseEntity<User> saveAdmin(@RequestBody User user) {
 
         if(!userService.findByLogin(user.getEmail()).get().isAdmin()) {
@@ -51,6 +59,8 @@ public class RestController {
     }
 
     @GetMapping("/user-auth")
+    @ApiOperation(value = "pega os dados de um usuário logado",
+            notes = "serve para casoso onde o usuário sai da aplicação mas retorna e ainda existe um token valido num cookie")
     public ResponseEntity<String> getUserData(@RequestHeader("Authorization") String token) {
 
         try{
@@ -78,6 +88,7 @@ public class RestController {
 
 
     @GetMapping("/users")
+    @ApiOperation(value = "retorna uma lista contendo todos os usuários")
     public ResponseEntity<List<User>> getAll() {
         return new ResponseEntity<List<User>>(userService.findAll(), HttpStatus.OK);
     }
