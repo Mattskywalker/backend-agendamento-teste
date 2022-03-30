@@ -1,26 +1,39 @@
 package com.comeia.backend.model;
 
+import com.comeia.backend.util.AgendamentoStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table
+@Table(name = "agendamento")
 public class Agendamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String dataAgendamento;
-    private String cpf;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @JsonIgnore()
+    private User user;
     private String servico;
+    private AgendamentoStatus status;
 
     public Agendamento() {
     }
 
-    public Agendamento(Long id, String dataAgendamento, String cpf) {
+    public Agendamento(Long id, String dataAgendamento, User user, String servico) {
         this.id = id;
         this.dataAgendamento = dataAgendamento;
-        this.cpf = cpf;
+        status =  AgendamentoStatus.PENDENTE;
+        user.setSenha(null);
+        this.user = user;
+        this.servico = servico;
     }
 
     public Long getId() {
@@ -39,12 +52,12 @@ public class Agendamento {
         this.dataAgendamento = dataAgendamento;
     }
 
-    public String getCpf() {
-        return cpf;
+    public User getUser() {
+        return user;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getServico() {
@@ -53,5 +66,13 @@ public class Agendamento {
 
     public void setServico(String servico) {
         this.servico = servico;
+    }
+
+    public AgendamentoStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(AgendamentoStatus status) {
+        this.status = status;
     }
 }

@@ -1,6 +1,7 @@
 package com.comeia.backend.services.impl;
 
 import com.comeia.backend.model.Agendamento;
+import com.comeia.backend.model.User;
 import com.comeia.backend.repository.AgendamentoRepository;
 import com.comeia.backend.services.AgendamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,13 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     }
 
     @Override
-    public Agendamento save(Agendamento agendamento) {
-        return this.agendamentoRepository.save(agendamento);
+    public List<Agendamento> findAllByUser(User user) {
+        return this.agendamentoRepository.findAllByUser(user).get();
     }
 
     @Override
-    public List<Agendamento> findAllByCpf(String cpf) {
-        return agendamentoRepository.findByCpf(cpf).get();
+    public Agendamento save(Agendamento agendamento) {
+        return this.agendamentoRepository.save(agendamento);
     }
 
     @Override

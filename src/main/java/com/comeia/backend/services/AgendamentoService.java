@@ -1,6 +1,7 @@
 package com.comeia.backend.services;
 
 import com.comeia.backend.model.Agendamento;
+import com.comeia.backend.model.User;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface AgendamentoService {
 
     public List<Agendamento> getAll();
 
-    public List<Agendamento> findAllByCpf(String cpf);
+    public  List<Agendamento> findAllByUser(User user);
 
     public Agendamento delete(Long id);
 
