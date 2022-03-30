@@ -1,5 +1,6 @@
 package com.comeia.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -23,7 +24,8 @@ public class User {
     private String telefone;
     private boolean admin;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonIgnoreProperties("user")
     private List<Agendamento> agendamentoList;
 
     @CreatedDate
@@ -32,6 +34,10 @@ public class User {
     private Date updatedAt;
 
     public User() {
+    }
+
+    public User(String cpf) {
+        this.cpf = cpf;
     }
 
     public User(Long id, String nome, String cpf, String email, String telefone) {
@@ -45,6 +51,14 @@ public class User {
     public User(String email, String senha) {
         this.email = email;
         this.senha = senha;
+    }
+
+    public List<Agendamento> getAgendamentoList() {
+        return agendamentoList;
+    }
+
+    public void setAgendamentoList(List<Agendamento> agendamentoList) {
+        this.agendamentoList = agendamentoList;
     }
 
     public boolean isAdmin() {

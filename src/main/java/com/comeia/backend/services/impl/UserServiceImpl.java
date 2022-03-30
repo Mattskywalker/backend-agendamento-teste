@@ -38,6 +38,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByCpf(String cpf) {
+        return this.userRepository.findByCpf(cpf).get();
+    }
+
+    @Override
     public User save(User user) {
         User userReturn = userRepository.save(user);
         System.out.println(userReturn);

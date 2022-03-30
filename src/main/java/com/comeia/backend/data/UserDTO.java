@@ -12,6 +12,7 @@ public class UserDTO {
     public UserDTO(User userDetails, String token, com.comeia.backend.model.User user) {
         userDetails.eraseCredentials();
         this.userDetails = userDetails;
+        user.setAgendamentoList(null);
         user.setSenha(null);
         this.userData = user;
         this.token = token;

@@ -13,6 +13,8 @@ public interface UserService {
 
         public Optional<User> findByLogin(String login);
 
+        public User findByCpf(String cpf);
+
         public User findUser(User user);
 
         public User save(User user);
